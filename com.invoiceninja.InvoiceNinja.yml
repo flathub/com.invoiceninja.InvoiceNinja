@@ -26,10 +26,10 @@ modules:
       - "./build-flatpak.sh"
     sources:
       - type: file
-        url: https://github.com/invoiceninja/admin-portal/releases/download/v5.0.136/Invoice-Ninja-Linux-Portable.tar.gz
-        sha256: fbf8bd95ff8a734e160436b04fcab866b3bb970ed99a470e850dc245c4471be0
+        url: https://github.com/invoiceninja/admin-portal/releases/download/v5.0.137/Invoice-Ninja-Linux-Portable.tar.gz
+        sha256: 009f83469bc4dc74da25aa0021ec27f7eed43a840d8edd7ce96859d0b05c3130
       - type: git
         url: https://github.com/invoiceninja/admin-portal.git
-        tag: v5.0.136
+        tag: v5.0.137
       - type: file
         path: build-flatpak.sh
