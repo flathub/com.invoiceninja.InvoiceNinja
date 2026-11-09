@@ -12,7 +12,6 @@ finish-args:
   - --device=dri
   - --share=network
   - --filesystem=xdg-download
-  - --talk-name=org.freedesktop.secrets
 modules:
   - name: admin
     buildsystem: simple
