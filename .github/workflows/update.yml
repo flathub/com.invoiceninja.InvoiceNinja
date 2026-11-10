@@ -1,0 +1,118 @@
+name: Update app
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 * * * *"
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-app:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      # Check upstream Invoice Ninja releases and update manifest sources
+      - name: Get PREVIOUS_APP_VERSION
+        run: |
+          PREVIOUS_APP_VERSION=$(yq -r '.. | select(has("url") and (.url | test("invoiceninja/flutter(\\.git)?$"))) | .tag' flatpak-flutter.yml)
+          echo "PREVIOUS_APP_VERSION=$PREVIOUS_APP_VERSION" >> "$GITHUB_ENV"
+
+      - name: Find newest upstream release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          APP_VERSION=$(gh api 'repos/invoiceninja/flutter/releases?per_page=1' --jq '.[0].tag_name')
+          echo "APP_VERSION=$APP_VERSION" >> "$GITHUB_ENV"
+
+      - name: Validate APP_VERSION
+        run: |
+          # Since we're using this in the pull request inputs, ensure it's not malicious or malformed
+          if ! [[ "$APP_VERSION" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "APP_VERSION '$APP_VERSION' is not a valid version number"
+            exit 1
+          fi
+
+      - name: Compare versions
+        id: update_found
+        run: |
+          if [ -n "$(git ls-remote --heads origin "update-$APP_VERSION")" ]; then
+            echo "Branch update-$APP_VERSION already exists on origin; skipping."
+            echo "update_found=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          PREV_CLEAN="${PREVIOUS_APP_VERSION%%-flathub*}"
+          PREV_NUM="${PREV_CLEAN#v}"
+          NEW_NUM="${APP_VERSION#v}"
+          if [ "$PREV_NUM" != "$NEW_NUM" ] && [ "$(printf '%s\n%s\n' "$PREV_NUM" "$NEW_NUM" | sort -V | tail -n1)" = "$NEW_NUM" ]; then
+            echo "update_found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "update_found=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Update flatpak-flutter.yml and foreign.json
+        if: steps.update_found.outputs.update_found == 'true'
+        run: |
+          COMMIT=$(git ls-remote https://github.com/invoiceninja/flutter "refs/tags/$APP_VERSION" | cut -f1)
+          if [ -z "$COMMIT" ]; then
+            echo "Failed to resolve commit for tag $APP_VERSION"
+            exit 1
+          fi
+
+          FLUTTER_VERSION=$(curl -fsSL "https://raw.githubusercontent.com/invoiceninja/flutter/$APP_VERSION/.github/workflows/appimage.yml" \
+            | yq -r '.. | select(has("flutter-version")) | .["flutter-version"]' | head -n1)
+          if [ -z "$FLUTTER_VERSION" ]; then
+            echo "Failed to extract flutter-version from appimage.yml"
+            exit 1
+          fi
+
+          PREPARE_FOSS=$(curl -fsSL "https://raw.githubusercontent.com/invoiceninja/flutter/$APP_VERSION/tools/prepare_foss.sh")
+          SQLITE3MC_URL=$(printf '%s\n' "$PREPARE_FOSS" | sed -nE 's/^[[:space:]]*SQLITE3MC_URL=["'\'']?([^"'\''[:space:]]+)["'\'']?.*$/\1/p' | head -n1)
+          SQLITE3MC_SHA=$(printf '%s\n' "$PREPARE_FOSS" | sed -nE 's/^[[:space:]]*SQLITE3MC_ZIP_SHA256=["'\'']?([^"'\''[:space:]]+)["'\'']?.*$/\1/p' | head -n1)
+          if [ -z "$SQLITE3MC_URL" ] || [ -z "$SQLITE3MC_SHA" ]; then
+            echo "Failed to extract SQLITE3MC_URL or SQLITE3MC_ZIP_SHA256 from prepare_foss.sh"
+            exit 1
+          fi
+
+          # Update invoiceninja/flutter.git tag and commit, plus flutter/flutter.git tag in flatpak-flutter.yml
+          APP_VERSION="$APP_VERSION" COMMIT="$COMMIT" FLUTTER_VERSION="$FLUTTER_VERSION" \
+            yq -i '
+              (.. | select(has("url") and (.url | test("invoiceninja/flutter(\\.git)?$")))) |= (.tag = strenv(APP_VERSION) | .commit = strenv(COMMIT)) |
+              (.. | select(has("url") and (.url | test("flutter/flutter(\\.git)?$")))) |= (.tag = strenv(FLUTTER_VERSION))
+            ' flatpak-flutter.yml
+
+          # Update sqlite3 url and sha256 in foreign.json
+          jq --indent 4 --arg url "$SQLITE3MC_URL" --arg sha "$SQLITE3MC_SHA" \
+            '.sqlite3.manifest.sources[0].url = $url | .sqlite3.manifest.sources[0].sha256 = $sha' \
+            foreign.json > foreign.json.tmp && mv foreign.json.tmp foreign.json
+
+      - name: Remove old generated manifests
+        if: steps.update_found.outputs.update_found == 'true'
+        run: rm -rf generated
+
+      - name: Update build manifest
+        if: steps.update_found.outputs.update_found == 'true'
+        run: docker run --rm -v "$PWD":/usr/src/flatpak -u `id -u`:`id -g` theappgineer/flatpak-flutter:0.15.0@sha256:dbe2dbb7db269f223c6a29f28e63d055bcad3c3851f7ee801cd81c66664a378e --app-module admin flatpak-flutter.yml
+
+      - name: Create Pull Request
+        id: cpr
+        if: steps.update_found.outputs.update_found == 'true'
+        uses: peter-evans/create-pull-request@v7
+        env:
+          SUMMARY: "Update Invoice Ninja to ${{ env.APP_VERSION }}"
+        with:
+          title: ${{ env.SUMMARY }}
+          commit-message: ${{ env.SUMMARY }}
+          branch: "update-${{ env.APP_VERSION }}"
+          body: "Automated update of Invoice Ninja from ${{ env.PREVIOUS_APP_VERSION }} to ${{ env.APP_VERSION }}."
+
+      - name: Enable auto-merge
+        if: steps.update_found.outputs.update_found == 'true' && steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --auto --merge || true
