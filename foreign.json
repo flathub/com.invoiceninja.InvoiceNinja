@@ -1,10 +1,7 @@
 {
-    "sqlite3": 
-    {
-        "manifest": 
-        {
-            "sources": 
-            [
+    "sqlite3": {
+        "manifest": {
+            "sources": [
                 {
                     "type": "archive",
                     "url": "https://github.com/utelle/SQLite3MultipleCiphers/releases/download/v2.6.1/sqlite3mc-2.6.1-sqlite-3.54.0-amalgamation.zip",
