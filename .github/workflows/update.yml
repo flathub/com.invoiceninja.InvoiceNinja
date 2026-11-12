@@ -3,7 +3,7 @@ name: Update app
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 0 * * 0"
 
 permissions:
   contents: write
@@ -110,9 +110,22 @@ jobs:
           commit-message: ${{ env.SUMMARY }}
           branch: "update-${{ env.APP_VERSION }}"
           body: "Automated update of Invoice Ninja from ${{ env.PREVIOUS_APP_VERSION }} to ${{ env.APP_VERSION }}."
+          delete-branch: true
 
       - name: Enable auto-merge
         if: steps.update_found.outputs.update_found == 'true' && steps.cpr.outputs.pull-request-number != ''
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --auto --merge || true
+        run: gh pr merge "${{ steps.cpr.outputs.pull-request-number }}" --auto --merge
+
+      - name: Close Pull Request
+        if: steps.update_found.outputs.update_found == 'true' && steps.cpr.outputs.pull-request-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          APP_VERSION: ${{ env.APP_VERSION }}
+        run: |
+          set -o pipefail
+          gh pr list --state open --json number,headRefName -q ".[] | select((.headRefName | startswith(\"update-\")) and .headRefName != \"update-$APP_VERSION\") | .number" | while read -r old_pr; do
+            gh pr close "$old_pr" --delete-branch --comment "Superseded by #$PR_NUMBER"
+          done
