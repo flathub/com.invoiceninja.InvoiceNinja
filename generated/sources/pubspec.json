@@ -2283,6 +2283,20 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
+        "url": "https://pub.dev/api/archives/phone_numbers_parser-9.0.29.tar.gz",
+        "sha256": "59ccb71840e41e6ec8e600b4bfd1d37cd171bb5e094b971b70831b7766c1e4a1",
+        "strip-components": 0,
+        "dest": ".pub-cache/hosted/pub.dev/phone_numbers_parser-9.0.29"
+    },
+    {
+        "type": "inline",
+        "contents": "59ccb71840e41e6ec8e600b4bfd1d37cd171bb5e094b971b70831b7766c1e4a1",
+        "dest": ".pub-cache/hosted-hashes/pub.dev",
+        "dest-filename": "phone_numbers_parser-9.0.29.sha256"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
         "url": "https://pub.dev/api/archives/platform-3.2.0.tar.gz",
         "sha256": "a36d119c13416516a7b5913fbe8af8531e11633d784c550b2125f76c758524ec",
         "strip-components": 0,
