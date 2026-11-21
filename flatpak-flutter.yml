@@ -38,8 +38,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/invoiceninja/flutter.git
-        tag: v5.1.32
-        commit: 5234e56a63d5e234b936dc86e3f69c6426fb18ff
+        tag: v5.1.33
+        commit: d6ec8f31ff3140a21531d28bdd731cbe10399ae6
       - type: git
         url: https://github.com/flutter/flutter.git
         tag: 3.50.0
