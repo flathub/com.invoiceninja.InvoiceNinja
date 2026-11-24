@@ -3640,16 +3640,16 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
-        "url": "https://pub.dev/api/archives/dwds-27.1.3.tar.gz",
-        "sha256": "91dd4abb4df82dbcc219ba4e9b85d7ee492f7549de9e098bc45a4a40ba7403a7",
+        "url": "https://pub.dev/api/archives/dwds-27.2.1.tar.gz",
+        "sha256": "6d7b931386a211398f6173ab2d29a8c45d48b1c54fa050a47b901d04ec1aacb8",
         "strip-components": 0,
-        "dest": ".pub-cache/hosted/pub.dev/dwds-27.1.3"
+        "dest": ".pub-cache/hosted/pub.dev/dwds-27.2.1"
     },
     {
         "type": "inline",
-        "contents": "91dd4abb4df82dbcc219ba4e9b85d7ee492f7549de9e098bc45a4a40ba7403a7",
+        "contents": "6d7b931386a211398f6173ab2d29a8c45d48b1c54fa050a47b901d04ec1aacb8",
         "dest": ".pub-cache/hosted-hashes/pub.dev",
-        "dest-filename": "dwds-27.1.3.sha256"
+        "dest-filename": "dwds-27.2.1.sha256"
     },
     {
         "type": "archive",
