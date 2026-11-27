@@ -1066,6 +1066,20 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
+        "url": "https://pub.dev/api/archives/flutter_svg-2.5.0.tar.gz",
+        "sha256": "4565a66f0a968f2e1ab4197854686990258aadab9572eb80a7655053a01dc302",
+        "strip-components": 0,
+        "dest": ".pub-cache/hosted/pub.dev/flutter_svg-2.5.0"
+    },
+    {
+        "type": "inline",
+        "contents": "4565a66f0a968f2e1ab4197854686990258aadab9572eb80a7655053a01dc302",
+        "dest": ".pub-cache/hosted-hashes/pub.dev",
+        "dest-filename": "flutter_svg-2.5.0.sha256"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
         "url": "https://pub.dev/api/archives/flutter_test_robots-0.0.24.tar.gz",
         "sha256": "3b00f2081148bde55190997c2772f934ad2f4529cbcfc4ccfa593f8ddc117a28",
         "strip-components": 0,
@@ -1920,14 +1934,14 @@
     {
         "type": "git",
         "url": "https://github.com/hillelcoren/mek-packages.git",
-        "commit": "8f8153438cd49e625e4ca141c6e1aa791198c1aa",
-        "dest": ".pub-cache/git/mek-packages-8f8153438cd49e625e4ca141c6e1aa791198c1aa"
+        "commit": "6b0d37ed5acd208da2b6a4eb099cde51838532ad",
+        "dest": ".pub-cache/git/mek-packages-6b0d37ed5acd208da2b6a4eb099cde51838532ad"
     },
     {
         "type": "shell",
         "commands": [
             "mkdir -p .pub-cache/git/cache/mek-packages-86945f6205f3fb1e028a209e3e122491589a8297",
-            "cp -rf .pub-cache/git/mek-packages-8f8153438cd49e625e4ca141c6e1aa791198c1aa/.git/* .pub-cache/git/cache/mek-packages-86945f6205f3fb1e028a209e3e122491589a8297"
+            "cp -rf .pub-cache/git/mek-packages-6b0d37ed5acd208da2b6a4eb099cde51838532ad/.git/* .pub-cache/git/cache/mek-packages-86945f6205f3fb1e028a209e3e122491589a8297"
         ]
     },
     {
@@ -3164,6 +3178,48 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
+        "url": "https://pub.dev/api/archives/vector_graphics-1.3.1.tar.gz",
+        "sha256": "06081e4f2d8f17c306aa58989520694b463ad411bc7c7b93e76afa3e41ca17ac",
+        "strip-components": 0,
+        "dest": ".pub-cache/hosted/pub.dev/vector_graphics-1.3.1"
+    },
+    {
+        "type": "inline",
+        "contents": "06081e4f2d8f17c306aa58989520694b463ad411bc7c7b93e76afa3e41ca17ac",
+        "dest": ".pub-cache/hosted-hashes/pub.dev",
+        "dest-filename": "vector_graphics-1.3.1.sha256"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
+        "url": "https://pub.dev/api/archives/vector_graphics_codec-1.2.0.tar.gz",
+        "sha256": "023f3afd1b08d040406e7ccc324f5173c04762a59e374f29d04cef00a4940742",
+        "strip-components": 0,
+        "dest": ".pub-cache/hosted/pub.dev/vector_graphics_codec-1.2.0"
+    },
+    {
+        "type": "inline",
+        "contents": "023f3afd1b08d040406e7ccc324f5173c04762a59e374f29d04cef00a4940742",
+        "dest": ".pub-cache/hosted-hashes/pub.dev",
+        "dest-filename": "vector_graphics_codec-1.2.0.sha256"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
+        "url": "https://pub.dev/api/archives/vector_graphics_compiler-1.3.4.tar.gz",
+        "sha256": "4c9d2e7121eea8b4f160e6e435900a0ae7214cfc97c2d6cf84c25532b789b50d",
+        "strip-components": 0,
+        "dest": ".pub-cache/hosted/pub.dev/vector_graphics_compiler-1.3.4"
+    },
+    {
+        "type": "inline",
+        "contents": "4c9d2e7121eea8b4f160e6e435900a0ae7214cfc97c2d6cf84c25532b789b50d",
+        "dest": ".pub-cache/hosted-hashes/pub.dev",
+        "dest-filename": "vector_graphics_compiler-1.3.4.sha256"
+    },
+    {
+        "type": "archive",
+        "archive-type": "tar-gzip",
         "url": "https://pub.dev/api/archives/vector_math-2.4.3.tar.gz",
         "sha256": "92b9910f66ed1057fd4da7b040ae7c74cafacf885bdc81be496928d5049b032d",
         "strip-components": 0,
@@ -3388,16 +3444,16 @@
     {
         "type": "archive",
         "archive-type": "tar-gzip",
-        "url": "https://pub.dev/api/archives/xml-7.1.0.tar.gz",
-        "sha256": "0fe8cc98946def31cbcbc8734aa4067031e6f65ea3a78a508060bfed2200bfeb",
+        "url": "https://pub.dev/api/archives/xml-7.0.1.tar.gz",
+        "sha256": "67f0aff7be013d107995e9b75bf4e7f2c3ef2dfdb2c8e68024bba0a7fd5756a4",
         "strip-components": 0,
-        "dest": ".pub-cache/hosted/pub.dev/xml-7.1.0"
+        "dest": ".pub-cache/hosted/pub.dev/xml-7.0.1"
     },
     {
         "type": "inline",
-        "contents": "0fe8cc98946def31cbcbc8734aa4067031e6f65ea3a78a508060bfed2200bfeb",
+        "contents": "67f0aff7be013d107995e9b75bf4e7f2c3ef2dfdb2c8e68024bba0a7fd5756a4",
         "dest": ".pub-cache/hosted-hashes/pub.dev",
-        "dest-filename": "xml-7.1.0.sha256"
+        "dest-filename": "xml-7.0.1.sha256"
     },
     {
         "type": "archive",
